@@ -1,12 +1,11 @@
-import { AggregateRoot } from '../entities/aggregate-root'
+import { DomainEvent } from '../events/domain-event'
 import { UniqueEntityID } from '../entities/unique-entity-id'
-import { DomainEvent } from './domain-event'
-import { DomainEvents } from './domain-events'
+import { AggregateRoot } from '../entities/aggregate-root'
+import { DomainEvents } from '@/core/events/domain-events'
 import { vi } from 'vitest'
 
 class CustomAggregateCreated implements DomainEvent {
   public ocurredAt: Date
-
   private aggregate: CustomAggregate // eslint-disable-line
 
   constructor(aggregate: CustomAggregate) {

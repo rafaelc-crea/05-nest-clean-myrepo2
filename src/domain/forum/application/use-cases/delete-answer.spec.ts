@@ -17,6 +17,7 @@ describe('Delete Answer', () => {
     inMemoryAnswersRepository = new InMemoryAnswersRepository(
       inMemoryAnswerAttachmentsRepository,
     )
+
     sut = new DeleteAnswerUseCase(inMemoryAnswersRepository)
   })
 

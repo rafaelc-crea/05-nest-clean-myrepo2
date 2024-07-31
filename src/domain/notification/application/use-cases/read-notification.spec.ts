@@ -7,7 +7,7 @@ import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 let inMemoryNotificationsRepository: InMemoryNotificationsRepository
 let sut: ReadNotificationUseCase
 
-describe('Read Notification', () => {
+describe('Send Notification', () => {
   beforeEach(() => {
     inMemoryNotificationsRepository = new InMemoryNotificationsRepository()
     sut = new ReadNotificationUseCase(inMemoryNotificationsRepository)
@@ -27,25 +27,6 @@ describe('Read Notification', () => {
     expect(inMemoryNotificationsRepository.items[0].readAt).toEqual(
       expect.any(Date),
     )
-  })
-
-  it('should not be able to read a notification from another user', async () => {
-    const notification = makeNotification(
-      {
-        recipientId: new UniqueEntityID('recipient-1'),
-      },
-      new UniqueEntityID('recipient-1'),
-    )
-
-    await inMemoryNotificationsRepository.create(notification)
-
-    const result = await sut.execute({
-      notificationId: notification.id.toString(),
-      recipientId: 'recipient-2',
-    })
-
-    expect(result.isLeft()).toBe(true)
-    expect(result.value).toBeInstanceOf(NotAllowedError)
   })
 
   it('should not be able to read a notification from another user', async () => {

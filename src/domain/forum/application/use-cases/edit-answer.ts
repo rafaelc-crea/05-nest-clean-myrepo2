@@ -1,12 +1,13 @@
 import { Answer } from '@/domain/forum/enterprise/entities/answer'
 import { AnswersRepository } from '../repositories/answers-repository'
 import { Either, left, right } from '@/core/either'
-import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
+import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { AnswerAttachmentList } from '../../enterprise/entities/answer-attachment-list'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { AnswerAttachmentsRepository } from '@/domain/forum/application/repositories/answer-attachments-repository'
 import { AnswerAttachment } from '../../enterprise/entities/answer-attachment'
-import { AnswerAttachmentsRepository } from '../repositories/answer-attachments-repository'
+import { Injectable } from '@nestjs/common'
 
 interface EditAnswerUseCaseRequest {
   authorId: string
@@ -21,7 +22,7 @@ type EditAnswerUseCaseResponse = Either<
     answer: Answer
   }
 >
-
+@Injectable()
 export class EditAnswerUseCase {
   constructor(
     private answersRepository: AnswersRepository,
@@ -44,27 +45,29 @@ export class EditAnswerUseCase {
       return left(new NotAllowedError())
     }
 
-    const currentAnswerattachments =
+    const currentAnswerAttachments =
       await this.answerAttachmentsRepository.findManyByAnswerId(answerId)
 
-    const answerattachmentList = new AnswerAttachmentList(
-      currentAnswerattachments,
+    const answerAttachmentList = new AnswerAttachmentList(
+      currentAnswerAttachments,
     )
 
-    const answerattachments = attachmentsIds.map((attachmentId) => {
+    const answerAttachments = attachmentsIds.map((attachmentId) => {
       return AnswerAttachment.create({
         attachmentId: new UniqueEntityID(attachmentId),
         answerId: answer.id,
       })
     })
 
-    answerattachmentList.update(answerattachments)
+    answerAttachmentList.update(answerAttachments)
 
-    answer.attachments = answerattachmentList
+    answer.attachments = answerAttachmentList
     answer.content = content
 
     await this.answersRepository.save(answer)
 
-    return right({ answer })
+    return right({
+      answer,
+    })
   }
 }

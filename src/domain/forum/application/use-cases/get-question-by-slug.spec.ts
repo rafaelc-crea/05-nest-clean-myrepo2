@@ -5,7 +5,6 @@ import { makeQuestion } from 'test/factories/make-question'
 import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments'
 
 let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
-
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
 let sut: GetQuestionBySlugUseCase
 
@@ -23,8 +22,6 @@ describe('Get Question By Slug', () => {
     const newQuestion = makeQuestion({
       slug: Slug.create('example-question'),
     })
-
-    console.log(newQuestion)
 
     await inMemoryQuestionsRepository.create(newQuestion)
 

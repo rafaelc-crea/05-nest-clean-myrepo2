@@ -6,7 +6,6 @@ import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questio
 import { SendNotificationUseCase } from '../use-cases/send-notification'
 import { InMemoryNotificationsRepository } from 'test/repositories/in-memory-notifications-repository'
 import { makeQuestion } from 'test/factories/make-question'
-import { vi } from 'vitest'
 import { waitFor } from 'test/utils/wait-for'
 import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments'
 
@@ -16,6 +15,7 @@ let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
 let inMemoryAnswersRepository: InMemoryAnswersRepository
 let inMemoryNotificationsRepository: InMemoryNotificationsRepository
 let sendNotificationUseCase: SendNotificationUseCase
+
 let sendNotificationExecuteSpy: unknown
 
 describe('On Answer Created', () => {
